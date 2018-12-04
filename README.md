@@ -30,7 +30,6 @@ Follow these instructions to install the **fmi-export** module:
 3. From the source code, copy the *fmi-export* directory (and the *fmu-examples* directory if you want to include examples) to the *src* subdirectory of ns-3, i.e., the directory with all the other ns-3 modules.
 
 4. Change into the ns-3 directory and configure `waf` with the *--with-fmi-export* flag set to the previously cloned FMI++ library:
-
 ```
      $ ./waf configure --with-fmi-export=/path/to/cloned/fmipp/code
 ```
@@ -268,7 +267,7 @@ The output of the script in the command line should be something along the follo
     flow-monitor			fmi-export (no Python)	fmu-examples (no Python)
     internet			internet-apps			lr-wpan
     lte					mesh				mobility
-    mpi				netanim (no Python)			network
+    mpi				netanim (no Python)		network
     nix-vector-routing		olsr					point-to-point
     point-to-point-layout	propagation			sixlowpan
     spectrum			stats					test (no Python)
