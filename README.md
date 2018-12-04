@@ -21,21 +21,21 @@ Follow these instructions to install the **fmi-export** module:
 
 1. This module relies on a lot of functionality provided by the FMI++ library.
    Hence, in order to install this module, the latest version of the FMI++ library should be cloned from its repository:
-
 ```
      $ git clone https://git.code.sf.net/p/fmipp/code fmipp
 ```
 
 2. Get the [source code from GitHub](https://github.com/ERIGrid/ns3-fmi-export).
+
 3. From the source code, copy the *fmi-export* directory (and the *fmu-examples* directory if you want to include examples) to the *src* subdirectory of ns-3, i.e., the directory with all the other ns-3 modules.
 
-3. Change into the ns-3 directory and configure `waf` with the *--with-fmi-export* flag set to the previously cloned FMI++ library:
+4. Change into the ns-3 directory and configure `waf` with the *--with-fmi-export* flag set to the previously cloned FMI++ library:
 
 ```
      $ ./waf configure --with-fmi-export=/path/to/cloned/fmipp/code
 ```
 
-4. Build the module using `waf`:
+5. Build the module using `waf`:
 
 ```
      $ ./waf
@@ -81,13 +81,11 @@ ns-3 is mainly developed for Linux, but it can also be installed on Windows in a
 7. From the source code, copy the `fmi-export` directory (and the `fmu-examples` directory if you want to include examples) to the `src` subdirectory of ns-3, i.e., the directory with all the other ns-3 modules.
 
 8. Change into the ns-3 directory and configure `waf` with the *--with-fmi-export* flag set to the previously cloned FMI++ library:
-
 ```
      $ ./waf configure --with-fmi-export=/path/to/cloned/fmipp/code
 ```
 
 9. Build the module using `waf`:
-
 ```
      $ ./waf
 ```
@@ -263,18 +261,18 @@ The output of the script in the command line should be something along the follo
     'build' finished successfully (1.363s)
 
     Modules built:
-    antenna					aodv					applications
-    bridge					buildings				config-store
-    core					csma					csma-layout
-    dsdv					dsr						energy
+    antenna			aodv					applications
+    bridge				buildings				config-store
+    core				csma					csma-layout
+    dsdv				dsr					energy
     flow-monitor			fmi-export (no Python)	fmu-examples (no Python)
-    internet				internet-apps			lr-wpan
-    lte						mesh					mobility
-    mpi						netanim (no Python)		network
+    internet			internet-apps			lr-wpan
+    lte					mesh				mobility
+    mpi				netanim (no Python)			network
     nix-vector-routing		olsr					point-to-point
-    point-to-point-layout	propagation				sixlowpan
-    spectrum				stats					test (no Python)
-    topology-read			traffic-control			uan
+    point-to-point-layout	propagation			sixlowpan
+    spectrum			stats					test (no Python)
+    topology-read		traffic-control			uan
     virtual-net-device		wave					wifi
     wimax
 
