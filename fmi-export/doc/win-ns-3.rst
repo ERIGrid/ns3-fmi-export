@@ -10,13 +10,14 @@ Cygwin
 
 2. During installation, chose all required packages. For instance, for *Cygwin version 2.891 (32-bit)* the following packages are the minimum requirement:
 
-    - mercurial (version 4.3.2-1)
-    - gcc-g++ (version 7.3.0-3)
-    - libboost-devel (version 1.66.0-1)
     - cmake (version 3.6.2-1)
+    - gcc-g++ (version 7.3.0-3)
+    - git (version 2.17.0-1)
+    - libboost-devel (version 1.66.0-1)
     - make (version 4.2.1-2)
-    - unzip (version 6.0-17)
+    - mercurial (version 4.3.2-1)
     - python2-pip (version 9.0.1-1)
+    - unzip (version 6.0-17)
 
 3. In the *Cygwin Terminal*, set the compiler flags:
 
@@ -45,7 +46,7 @@ Troubleshooting
 
     child_info_fork::abort: address space needed by 'XYZ.dll' (0x790000) is already occupied
     error: [Errno 11] Resource temporarily unavailable
-  
+
 The shared library name, address values and specific error message can vary and it can occur with any process that tries to load a DLL, that is not re-baseable, into memory.
 This is a well-known Cygwin issues, where the virtual address space being claimed is already occupied by another process.
 

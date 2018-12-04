@@ -38,7 +38,6 @@ Follow these instructions to install the **fmi-export** module:
 ```
 
 5. Build the module using `waf`:
-
 ```
      $ ./waf
 ```
@@ -52,13 +51,14 @@ ns-3 is mainly developed for Linux, but it can also be installed on Windows in a
 2. During installation, chose all required packages.
    For instance, for *Cygwin version 2.891 (32-bit)* the following packages are the minimum requirement:
 
-   - mercurial (version 4.3.2-1)
-   - gcc-g++ (version 7.3.0-3)
-   - libboost-devel (version 1.66.0-1)
    - cmake (version 3.6.2-1)
+   - gcc-g++ (version 7.3.0-3)
+   - git (version 2.17.0-1)
+   - libboost-devel (version 1.66.0-1)
    - make (version 4.2.1-2)
-   - unzip (version 6.0-17)
+   - mercurial (version 4.3.2-1)
    - python2-pip (version 9.0.1-1)
+   - unzip (version 6.0-17)
 
 3. In the *Cygwin Terminal*, set the compiler flags:
 ```
@@ -109,7 +109,7 @@ The sending/receiving of messages is simulated with individual ns-3 simulation r
 
 To define an FMI-compliant ns-3 script, a new class inheriting from *SimpleEventQueueFMUBase* has to be implementedwhich provides the following two functions:
 
-* Function *initializeSimulation()*: 
+* Function *initializeSimulation()*:
   This function allows to define simulation variables (typically member variables of the inheriting class) as inputs/outputs/parameters of the ns-3 simulation.
 
 * Function *runSimulation( const double& sync_time )*:
@@ -125,7 +125,6 @@ This macro replaces the typical main function of ns-3 scripts.
 
 FMUs can be generated using the Python script `ns3_fmu_create.py`.
 The FMU is created by executing the Python script from the command line:
-
 ```
      ns3_fmu_create.py [-h] [-v] -m <model_id> -s <ns3_script> \
         [-f <fmi_version>] [<additional_file_1> ... <additional_file_N>] \
@@ -162,7 +161,7 @@ During simulation, interaction with the FMU is basically limited to the use of t
 
 * *Synchronization*: An FMU for co-simulation is synchronized from one synchronization point to the next by calling the *doStep( ..., com_point, step_size, ...)* function, where *com_point* is the time of the last successful FMU synchronization and *step_size* is the length of the next simulation step.
   In the case of FMUs for ns-3, which internally implement an event queue, there are three distinct ways of calling this function:
-  
+
   1. *Time advance*: When doStep(...) is called with step_size > 0, then the FMU tries to advance its internal simulation time accordingly.
 
   2. *Receiving messages*: When calling doStep(...) with step_step = 0 (an FMU iteration) at a time corresponding to an internal event, the value(s) of the associated output variable(s) will be set to the according message ID.
@@ -186,7 +185,7 @@ The example applications are test cases from the [ERIGrid](https://erigrid.eu/) 
 * *LSS2*:
   This test case also looks on the data transmission of smart meters to a controller, focusing on the effect of co-channel interference of Wi-Fi networks.
   This test case is described in detail in ERIGrid deliverable D-JRA2.3.
-  
+
 Module **fmu-examples** provides the models for these test cases.
 These models implement dedicated clients and servers, which provide the functionality to extract the end-to-end delay of message transmissions.
 Based on these end-to-end delays, the ns-3 simulation scripts add events to the event queue of the FMU.
@@ -240,7 +239,6 @@ The script defines class *SimpleFMU*, which inherits from class *SimpleEventQueu
 
 Create the FMU with the help of Python script `ns3_fmu_create.py`.
 In the command line, go to the example directory *src/fmu-examples/examples* and issue the following command:
-
 ```
   $ ./../../fmi-export/ns3_fmu_create.py -v -m SimpleFMU -s scratch/SimpleFMU.cc -f 1 channel_delay=0.2
 ```
@@ -256,7 +254,6 @@ This command does the following:
 
 
 The output of the script in the command line should be something along the following lines. (Note that `waf` is called twice during the process.)
-
 ```
     [DEBUG] Using FMI version 1
     [DEBUG] Found start value:  channel_delay = 0.2
@@ -304,7 +301,6 @@ The output of the script in the command line should be something along the follo
 Python script `testSimpleFMU.py` uses the generated FMU in a simulation.
 It can be found in the module's subdirectory *examples/test*.
 When running the simulation script, the output should be similar to the following:
-
 ```
     [test_sim_ict] WARNING: The path specified for the FMU's entry point does not exist: ""
     Use directory of main application as working directory instead.
@@ -356,7 +352,6 @@ When running the simulation script, the output should be similar to the followin
 
 Create the FMU with the help of Python script `ns3_fmu_create.py`.
 In the command line, go to the example directory *src/fmu-examples/examples* and issue the following command:
-
 ```
      $ ./../../fmi-export/ns3_fmu_create.py -v -m TC3 -s scratch/TC3.cc -f 1
 ```
@@ -366,7 +361,6 @@ In the command line, go to the example directory *src/fmu-examples/examples* and
 Python script `testTC3.py` uses the generated FMU in a simulation.
 It can be found in the module's subdirectory *examples/test*.
 When running the simulation script, the output should be similar to the following:
-
 ```
     [test_sim_ict] WARNING: The path specified for the FMU's entry point does not exist: ""
     Use directory of main application as working directory instead.
@@ -485,7 +479,6 @@ When running the simulation script, the output should be similar to the followin
 
 Create the FMU with the help of Python script `ns3_fmu_create.py`.
 In the command line, go to the example directory *src/fmu-examples/examples* and issue the following command:
-
 ```
   $ ./../../fmi-export/ns3_fmu_create.py -v -m LSS2 -s scratch/LSS2.cc -f 1 max_jitter=0.01
 ```
@@ -495,7 +488,6 @@ In the command line, go to the example directory *src/fmu-examples/examples* and
 Python script `testLSS2.py` uses the generated FMU in a simulation.
 It can be found in the module's subdirectory *examples/test*.
 When running the simulation script, the output should be similar to the following:
-
 ```
     [test_sim_ict] WARNING: The path specified for the FMU's entry point does not exist: ""
     Use directory of main application as working directory instead.
