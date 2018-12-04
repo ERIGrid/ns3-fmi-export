@@ -26,6 +26,9 @@ Follow these instructions to install the **fmi-export** module:
 ```
 
 2. Get the [source code from GitHub](https://github.com/ERIGrid/ns3-fmi-export).
+```
+     $ git clone git@github.com:ERIGrid/ns3-fmi-export.git
+```
 
 3. From the source code, copy the *fmi-export* directory (and the *fmu-examples* directory if you want to include examples) to the *src* subdirectory of ns-3, i.e., the directory with all the other ns-3 modules.
 
@@ -76,6 +79,9 @@ ns-3 is mainly developed for Linux, but it can also be installed on Windows in a
 ```
 
 6. Get the [source code from GitHub](https://github.com/ERIGrid/ns3-fmi-export).
+```
+     $ git clone git@github.com:ERIGrid/ns3-fmi-export.git
+```
 
 7. From the source code, copy the `fmi-export` directory (and the `fmu-examples` directory if you want to include examples) to the `src` subdirectory of ns-3, i.e., the directory with all the other ns-3 modules.
 
