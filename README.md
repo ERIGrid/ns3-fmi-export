@@ -26,15 +26,16 @@ Follow these instructions to install the **fmi-export** module:
      $ git clone https://git.code.sf.net/p/fmipp/code fmipp
 ```
 
-2. Copy the `fmi-export` directory (and the `fmu-examples` directory if you want to include examples) to the `src` subdirectory of ns-3, i.e., the directory with all the other ns-3 modules.
+2. Get the [source code from GitHub](https://github.com/ERIGrid/ns3-fmi-export).
+3. From the source code, copy the *fmi-export* directory (and the *fmu-examples* directory if you want to include examples) to the *src* subdirectory of ns-3, i.e., the directory with all the other ns-3 modules.
 
-3. Change into the ns-3 directory and configure *waf* with the *--with-fmi-export* flag set to the previously cloned FMI++ library:
+3. Change into the ns-3 directory and configure `waf` with the *--with-fmi-export* flag set to the previously cloned FMI++ library:
 
 ```
      $ ./waf configure --with-fmi-export=/path/to/cloned/fmipp/code
 ```
 
-4. Build the module using *waf*:
+4. Build the module using `waf`:
 
 ```
      $ ./waf
@@ -58,13 +59,11 @@ ns-3 is mainly developed for Linux, but it can also be installed on Windows in a
    - python2-pip (version 9.0.1-1)
 
 3. In the *Cygwin Terminal*, set the compiler flags:
-
 ```
     $ export CXXFLAGS="-D_USE_MATH_DEFINES -D_BSD_SOURCE -include limits.h"
 ```
 
 4. In the *Cygwin Terminal*, follow the [standard installation instructions for Linux](https://www.nsnam.org/support/faq/setup/):
-
 ```
     $ hg clone http://code.nsnam.org/ns-3-allinone
     $ cd ns-3-allinone
@@ -73,20 +72,21 @@ ns-3 is mainly developed for Linux, but it can also be installed on Windows in a
 ```
 
 5. Retrieve the latest version of the FMI++ library from its repository:
-
 ```
      $ git clone https://git.code.sf.net/p/fmipp/code fmipp
 ```
 
-6. Copy the `fmi-export` directory (and the `fmu-examples` directory if you want to include examples) to the `src` subdirectory of ns-3, i.e., the directory with all the other ns-3 modules.
+6. Get the [source code from GitHub](https://github.com/ERIGrid/ns3-fmi-export).
 
-7. Change into the ns-3 directory and configure *waf* with the *--with-fmi-export* flag set to the previously cloned FMI++ library:
+7. From the source code, copy the `fmi-export` directory (and the `fmu-examples` directory if you want to include examples) to the `src` subdirectory of ns-3, i.e., the directory with all the other ns-3 modules.
+
+8. Change into the ns-3 directory and configure `waf` with the *--with-fmi-export* flag set to the previously cloned FMI++ library:
 
 ```
      $ ./waf configure --with-fmi-export=/path/to/cloned/fmipp/code
 ```
 
-8. Build the module using *waf*:
+9. Build the module using `waf`:
 
 ```
      $ ./waf
@@ -194,12 +194,12 @@ Helpers for including the clients and servers into simulations scripts are provi
 All helpers are specializations of the template base classes *ClientHelperBase* and *ServerHelperBase*.
 
 
-The examples are implemented in dedicated ns-3 scripts, which can be found in the module's subdirectory `examples/scratch`.
+The examples are implemented in dedicated ns-3 scripts, which can be found in the module's subdirectory *examples/scratch*.
 The scripts can be translated to FMUs for Co-Simulations using Python script `ns3_fmu_create.py` (from module *fmi-export*).
-Test applications (written in Python) using these FMUs can be found in module's subdirectory `examples/test`.
+Test applications (written in Python) using these FMUs can be found in module's subdirectory *examples/test*.
 
-To build module *fmu-export*, copy directory `fmu-examples` to ns-3's `src` directory (i.e., the directory with all the other ns-3 modules).
-Then change into the ns-3 root directory and build the module using *waf*.
+To build the examples, copy directory *fmu-examples* to ns-3's *src* directory (i.e., the directory with all the other ns-3 modules).
+Then change into the ns-3 root directory and build the module using `waf`.
 
 
 ### Example SimpleFMU
@@ -236,7 +236,7 @@ The script defines class *SimpleFMU*, which inherits from class *SimpleEventQueu
 #### Creating the FMU
 
 Create the FMU with the help of Python script `ns3_fmu_create.py`.
-In the command line, go to the example directory (`src/fmu-examples/examples`) and issue the following command:
+In the command line, go to the example directory *src/fmu-examples/examples* and issue the following command:
 
 ```
   $ ./../../fmi-export/ns3_fmu_create.py -v -m SimpleFMU -s scratch/SimpleFMU.cc -f 1 channel_delay=0.2
@@ -245,14 +245,14 @@ In the command line, go to the example directory (`src/fmu-examples/examples`) a
 This command does the following:
 
 * It defines the FMU's model identifier as *SimpleFMU*.
-  This means that the resulting FMU will be called `SimpleFMU.fmu`.
+  This means that the resulting FMU will be called *SimpleFMU.fmu*.
 
-* It defines `scratch/SimpleFMU.cc` as the ns-3 script to be used for the simulation.
+* It defines *scratch/SimpleFMU.cc* as the ns-3 script to be used for the simulation.
 
 * The parameter *channel_delay* is set to 0.3.
 
 
-The output of the script in the command line should be something along the following lines. (Note that *waf* is called twice during the process.)
+The output of the script in the command line should be something along the following lines. (Note that `waf` is called twice during the process.)
 
 ```
     [DEBUG] Using FMI version 1
@@ -263,24 +263,24 @@ The output of the script in the command line should be something along the follo
     'build' finished successfully (1.363s)
 
     Modules built:
-    antenna                   aodv                      applications
-    bridge                    buildings                 config-store
-    core                      csma                      csma-layout
-    dsdv                      dsr                       energy
-    flow-monitor              fmi-export (no Python)    fmu-examples (no Python)
-    internet                  internet-apps             lr-wpan
-    lte                       mesh                      mobility
-    mpi                       netanim (no Python)       network
-    nix-vector-routing        olsr                      point-to-point
-    point-to-point-layout     propagation               sixlowpan
-    spectrum                  stats                     test (no Python)
-    topology-read             traffic-control           uan
-    virtual-net-device        wave                      wifi
+    antenna					aodv					applications
+    bridge					buildings				config-store
+    core					csma					csma-layout
+    dsdv					dsr						energy
+    flow-monitor			fmi-export (no Python)	fmu-examples (no Python)
+    internet				internet-apps			lr-wpan
+    lte						mesh					mobility
+    mpi						netanim (no Python)		network
+    nix-vector-routing		olsr					point-to-point
+    point-to-point-layout	propagation				sixlowpan
+    spectrum				stats					test (no Python)
+    topology-read			traffic-control			uan
+    virtual-net-device		wave					wifi
     wimax
 
     Modules not built (see ns-3 tutorial for explanation):
-    brite                     click                     fd-net-device
-    openflow                  tap-bridge                visualizer
+    brite					click					fd-net-device
+    openflow				tap-bridge				visualizer
 
     [DEBUG] successfully compiled ns-3 script
     Waf: Entering directory `/cygdrive/c/Development/erigrid/ns-3-allinone/ns-3-dev/build'
@@ -299,7 +299,7 @@ The output of the script in the command line should be something along the follo
 #### Using the FMU in a simulation
 
 Python script `testSimpleFMU.py` uses the generated FMU in a simulation.
-It can be found in the module's subdirectory `examples/test`.
+It can be found in the module's subdirectory *examples/test*.
 When running the simulation script, the output should be similar to the following:
 
 ```
@@ -352,7 +352,7 @@ When running the simulation script, the output should be similar to the followin
 #### Creating the FMU
 
 Create the FMU with the help of Python script `ns3_fmu_create.py`.
-In the command line, go to the example directory (`src/fmu-examples/examples`) and issue the following command:
+In the command line, go to the example directory *src/fmu-examples/examples* and issue the following command:
 
 ```
      $ ./../../fmi-export/ns3_fmu_create.py -v -m TC3 -s scratch/TC3.cc -f 1
@@ -361,7 +361,7 @@ In the command line, go to the example directory (`src/fmu-examples/examples`) a
 #### Using the FMU in a simulation
 
 Python script `testTC3.py` uses the generated FMU in a simulation.
-It can be found in the module's subdirectory `examples/test`.
+It can be found in the module's subdirectory *examples/test*.
 When running the simulation script, the output should be similar to the following:
 
 ```
@@ -481,7 +481,7 @@ When running the simulation script, the output should be similar to the followin
 #### Creating the FMU
 
 Create the FMU with the help of Python script `ns3_fmu_create.py`.
-In the command line, go to the example directory (`src/fmu-examples/examples`) and issue the following command:
+In the command line, go to the example directory *src/fmu-examples/examples* and issue the following command:
 
 ```
   $ ./../../fmi-export/ns3_fmu_create.py -v -m LSS2 -s scratch/LSS2.cc -f 1 max_jitter=0.01
@@ -490,7 +490,7 @@ In the command line, go to the example directory (`src/fmu-examples/examples`) a
 #### Using the FMU in a simulation
 
 Python script `testLSS2.py` uses the generated FMU in a simulation.
-It can be found in the module's subdirectory `examples/test`.
+It can be found in the module's subdirectory *examples/test*.
 When running the simulation script, the output should be similar to the following:
 
 ```
