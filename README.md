@@ -83,7 +83,7 @@ ns-3 is mainly developed for Linux, but it can also be installed on Windows in a
      $ git clone git@github.com:ERIGrid/ns3-fmi-export.git
 ```
 
-7. From the source code, copy the `fmi-export` directory (and the `fmu-examples` directory if you want to include examples) to the `src` subdirectory of ns-3, i.e., the directory with all the other ns-3 modules.
+7. From the source code, copy the *fmi-export* directory (and the *fmu-examples* directory if you want to include examples) to the *src* subdirectory of ns-3, i.e., the directory with all the other ns-3 modules.
 
 8. Change into the ns-3 directory and configure `waf` with the *--with-fmi-export* flag set to the previously cloned FMI++ library:
 ```
