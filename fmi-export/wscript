@@ -1,0 +1,181 @@
+# -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+import os, stat, subprocess, json
+
+from waflib import Options
+
+
+REQUIRED_BOOST_LIBS = ['system', 'date_time', 'filesystem']
+
+
+def options( opt ):
+    opt.add_option( '--with-fmi-export', help=( 'enable FMI export' ), dest='with_fmi_export' )
+
+
+def required_boost_libs( conf ):
+    conf.env[ 'REQUIRED_BOOST_LIBS' ] += REQUIRED_BOOST_LIBS
+
+
+def configure( conf ):
+
+    # Check if the module has been selected for compilation.
+    if not Options.options.with_fmi_export:
+        # The module has not been selected for compilation, abort configuration.
+        abort_configuration( conf, 'FMU Export not enabled (see option --with-fmi-export)' )
+        return
+
+    # Check if Boost is abailable.
+    if not conf.env['LIB_BOOST']:
+        abort_configuration( conf, 'A Boost installation is required for this module.' )
+        return
+
+    # Retrieve list of available boost libraries.
+    present_boost_libs = []
+    for boost_lib_name in conf.env[ 'LIB_BOOST' ]:
+        if boost_lib_name.startswith( "boost_" ):
+            boost_lib_name = boost_lib_name[6:]
+        if boost_lib_name.endswith( ".dll" ): # Cygwin support.
+            boost_lib_name = boost_lib_name[:-4]
+        if boost_lib_name.endswith( "-mt" ):
+            boost_lib_name = boost_lib_name[:-3]
+        present_boost_libs.append( boost_lib_name )
+
+    # Check if specific Boost libraries are available
+    missing_boost_libs = [ lib for lib in REQUIRED_BOOST_LIBS if lib not in present_boost_libs ]
+    if missing_boost_libs != []:
+        error_message = 'Required boost libraries not found, missing: %s' % ', '.join( missing_boost_libs )
+        abort_configuration( conf, error_message )
+        return    
+
+    # Configure dependencies to FMI++ library.
+    if os.path.isdir( Options.options.with_fmi_export ):
+
+        # Retrieve path to FMI++ source directory (supplied by user).
+        fmipp_include_path = os.path.abspath( Options.options.with_fmi_export )
+
+        #conf.env[ 'WITH_FMI_EXPORT' ] = fmipp_include_path
+
+        # Path to shared libraries.
+        fmipp_lib_path = os.path.join( conf.path.abspath(), 'lib' )
+
+        # Save configuration (to be used by the module's scripts for generating FMUs).
+        save_configuration( conf, fmipp_include_path, fmipp_lib_path )
+
+        # Check which C and C++ compiler waf uses.
+        conf_c_compiler = conf.env[ 'CC' ]
+        if ( 1 != len( conf_c_compiler ) ):
+            # There seems to be a problem with the configuration ...
+            abort_configuration( conf, 'Unable to retrieve C compiler from configuration.' )
+            return
+        c_compiler = conf_c_compiler[0]
+
+        conf_cxx_compiler = conf.env[ 'CXX' ]
+        if ( 1 != len( conf_cxx_compiler ) ):
+            # There seems to be a problem with the configuration ...
+            abort_configuration( conf, 'Unable to retrieve C++ compiler from configuration.' )
+            return
+        cxx_compiler = conf_cxx_compiler[0]
+
+        # Issue debug message.
+        conf.msg( "Checking for FMI++ location", ( "%s (given)" % fmipp_include_path ) )
+        conf.msg( "Checking for FMI++ library path", fmipp_lib_path )
+        conf.msg( "Checking for C compiler", c_compiler )
+        conf.msg( "Checking for C++ compiler", cxx_compiler )
+
+        # Define command for compiling shared libraries from FMI++ code.
+        compile_fmipp_cmd = 'cmake . -DFMIPP_ROOT_DIR=%s -DCMAKE_C_COMPILER=%s -DCMAKE_CXX_COMPILER=%s && make' % ( fmipp_include_path, c_compiler, cxx_compiler )
+
+        # Compile shared libraries from FMI++ code.
+        exit_code = subprocess.call( compile_fmipp_cmd, shell=True, cwd=fmipp_lib_path )
+        if ( 0 != exit_code ):
+            # Compilation failed, abort configuration.
+            abort_configuration( conf, 'Failed to build shared libraries.' )
+            return
+    
+        # Define compiler and linker flags specific to FMI++.
+        conf.env.append_value( 'CXXFLAGS', [ '-I' + fmipp_include_path ] )
+        #conf.env.append_value( 'CXXDEFINES', [ '-D...' ] )
+        
+        # Specify name of shared library implementing the back-end.
+        backend_impl = 'fmipp_backend'
+        if 'cygwin' in conf.env[ 'PLATFORM' ]: backend_impl = 'cyg' + backend_impl # Cygwin support
+
+        # Add specific linker flags.
+        conf.env.append_value( 'LINKFLAGS', [
+            '-Wl,--no-as-needed', # Needed on some Linux variants.
+            '-l' + backend_impl , # Add shared library implementing the back-end.
+            ] )
+
+        # Add directory containing the shared library implementing the back-end to the list of module paths.
+        conf.env.append_value( 'NS3_MODULE_PATH', [ fmipp_lib_path ] )
+        
+        # Add all module paths to the linker flags.
+        for p in conf.env[ 'NS3_MODULE_PATH' ]:
+            conf.env.append_value( 'LINKFLAGS', [ '-L' + p, '-Wl,-rpath,' + p ] )
+
+    else:
+        # The provided directory does not exist, abort configuration.
+        error_message = 'invlaid path for FMI++ library: %s' % Options.options.with_fmi_export
+        abort_configuration( conf, error_message )
+        return
+
+    # Make sure that all scripts provided by this module are executable (permissions may be messed up after checking out the code from a repository).
+    script_names = [
+        'ns3_fmu_create.py',
+        os.path.join( 'scripts', 'fmi1_build_cygwin.sh' ),
+        os.path.join( 'scripts', 'fmi1_build.sh' ),
+        ]
+    for script_name in script_names:
+        full_script_name = os.path.join( conf.path.abspath(), script_name )
+        st = os.stat( full_script_name )
+        os.chmod( full_script_name, st.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH )
+    
+    conf.report_optional_feature( 'fmi-export', 'NS-3 FMU Export Utility', True, '' )
+
+    #conf.check_nonfatal(header_name='stdint.h', define_name='HAVE_STDINT_H')
+
+
+def build( bld ):
+
+    module = bld.create_ns3_module( 'fmi-export', ['core'] )
+    module.source = [
+        'model/fmi-export.cc',
+        'model/simple-event-queue-fmu-base.cc',
+        ]
+
+    #module_test = bld.create_ns3_module_test_library( 'fmi-export' )
+    #module_test.source = [ ]
+
+    headers = bld( features = 'ns3header' )
+    headers.module = 'fmi-export'
+    headers.source = [
+        'model/fmi-export.h',
+        'model/simple-event-queue-fmu-base.h',
+        ]
+
+    #if bld.env.ENABLE_EXAMPLES:
+    #    bld.recurse( 'examples' )
+
+    #bld.ns3_python_bindings()
+
+
+def abort_configuration( conf, message ):
+    conf.msg( 'Configuring FMU Export', message )
+    conf.report_optional_feature( 'fmi-export', 'NS-3 FMU Export Utility', False, message )
+    # Add this module to the list of modules that won't be built if they are enabled.
+    conf.env[ 'MODULES_NOT_BUILT' ].append( 'fmi-export' )
+
+
+def save_configuration( conf, fmipp_include_path, fmipp_lib_path ):
+    # Put the data into a dictionary.
+    output_data = {
+        'FMIPP_INCLUDE_PATH' : fmipp_include_path,
+        'FMIPP_LIB_PATH' : fmipp_lib_path,
+        'NS3_ROOT_DIR' : os.getcwd() }
+
+    # Define output file name.
+    output_file_path = os.path.join( conf.path.abspath(), 'fmi_export_conf.json' )
+
+    # Write data to JSON-formatted file.
+    with open( output_file_path, 'w' ) as output_file:
+        json.dump( output_data, output_file )    

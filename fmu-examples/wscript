@@ -1,0 +1,59 @@
+# -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+def configure( conf ):
+
+    conf.report_optional_feature( 'fmu-examples', 'NS-3 FMU Export Examples', True, '' )
+
+
+def build( bld ):
+
+    module = bld.create_ns3_module( 'fmu-examples', ['core', 'fmi-export', 'network', 'internet', 'point-to-point', 'applications'] )
+    module.source = [
+        'model/client-base.cc',
+        'model/server-base.cc',
+        'model/lss2-device-custom-client.cc',
+        'model/lss2-dummy-device-custom-client.cc',
+        'model/lss2-dummy-device-custom-server.cc',
+        'model/lss2-controller-server.cc',
+        'model/tc3-oltc-custom-server.cc',
+        'model/tc3-smartmeter-custom-client.cc',
+        'model/tc3-controller-client.cc',
+        'model/tc3-controller-server.cc',
+        'model/tc3-custom-client.cc',
+        'model/tc3-custom-server.cc',
+        ]
+
+    #module_test = bld.create_ns3_module_test_library( 'fmu-examples' )
+    #module_test.source = [ ]
+
+    headers = bld( features = 'ns3header' )
+    headers.module = 'fmu-examples'
+    headers.source = [
+        'model/client-base.h',
+        'model/server-base.h',
+        'model/lss2-device-custom-client.h',
+        'model/lss2-dummy-device-custom-client.h',
+        'model/lss2-dummy-device-custom-server.h',
+        'model/lss2-controller-server.h',
+        'model/tc3-oltc-custom-server.h',
+        'model/tc3-smartmeter-custom-client.h',
+        'model/tc3-controller-client.h',
+        'model/tc3-controller-server.h',
+        'model/tc3-custom-client.h',
+        'model/tc3-custom-server.h',
+        'helper/helper-base.icc',
+        'helper/lss2-helper.h',
+        'helper/tc3-helper.h',
+        ]
+
+    #if bld.env.ENABLE_EXAMPLES:
+    #    bld.recurse( 'examples' )
+
+    #bld.ns3_python_bindings()
+
+
+def abort_configuration( conf, message ):
+    conf.msg( 'Configuring FMU Export', message )
+    conf.report_optional_feature( 'fmu-examples', 'NS-3 FMU Export Examples', False, message )
+    # Add this module to the list of modules that won't be built if they are enabled.
+    conf.env[ 'MODULES_NOT_BUILT' ].append( 'fmu-examples' )
