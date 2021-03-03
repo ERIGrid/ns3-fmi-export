@@ -16,7 +16,7 @@ Furthermore, test applications (written in Python) show how the resulting FMUs c
 In addition to ns-3, the following tools/libraries need to be installed:
 
 * **Cmake**
-* **Boost**: all header files plus compiled *date_time*, *system* and *filesystem* libraries
+* **Boost**: recommended version is **1.66**, all header files plus compiled *date_time*, *system* and *filesystem* libraries are required
 
 
 Follow these instructions to install the **fmi-export** module:
