@@ -91,7 +91,7 @@ ns-3 is mainly developed for Linux, but it can also be installed on Windows in a
 The extra compilers flags from step 3 should always be set when running `./waf configure` or `./waf`.
 
 **NOTE**:
-This installation recipe only works with *32-bit versions of Cygwin**.
+This installation recipe only works with **32-bit versions of Cygwin**.
 Even though everything compiles with 64-bit versions of Cygwin, ns-3 executables exit with a segmentation fault.
 
 ## FMI-compliant ns-3 scripts
