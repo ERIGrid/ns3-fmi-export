@@ -130,7 +130,7 @@ TC3CommNetworkFMU::runSimulation(const double& sync_time)
 	csmaDevices = csma.Install( csmaNodes );
 
 	YansWifiChannelHelper channel = YansWifiChannelHelper::Default();
-	YansWifiPhyHelper phy = YansWifiPhyHelper::Default();
+	YansWifiPhyHelper phy;
 	phy.SetChannel( channel.Create() );
 	WifiHelper wifi;
 	wifi.SetRemoteStationManager( "ns3::AarfWifiManager" );

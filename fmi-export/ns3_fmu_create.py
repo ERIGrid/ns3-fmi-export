@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 # -----------------------------------------------------------------
 # Copyright (c) 2018, AIT Austrian Institute of Technology GmbH.
@@ -6,7 +6,7 @@
 
 #
 # This file is used to create FMUs for CoSimulation from ns-3 applications.
-# 
+#
 
 # Setup for Python 2.
 try:

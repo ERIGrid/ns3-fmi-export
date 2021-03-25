@@ -1,13 +1,17 @@
 from ctypes import *
 import sys
 import os.path
-import urlparse, urllib
+import urllib.parse as urlparse, urllib.request as urllib
 import xml.etree.ElementTree
 
 
 def py_logger( c, instance_name, status, category, message ):
     #if not status is FMUCoSimulationV1.fmi_ok:
-    print( '[{}] {}: {}'.format( instance_name, category, message ) )
+    print( '[{}] {}: {}'.format(
+        instance_name.decode( 'utf-8' ),
+        category.decode( 'utf-8' ),
+        message.decode( 'utf-8' )
+        ) )
 
 def py_step_finished( c, status ):
     pass
@@ -57,8 +61,8 @@ class FMICallbackFunctionsV1( Structure ):
 
 class FMUCoSimulationV1:
 
-    fmi_true = '1'
-    fmi_false = '0'
+    fmi_true = b'1'
+    fmi_false = b'0'
 
     fmi_ok = 0
     fmi_warning = 1
@@ -266,10 +270,10 @@ class FMUCoSimulationV1:
         func_name_instantiate_slave = self.fmu_name + '_fmiInstantiateSlave'
         func_instantiate_slave = getattr( self.fmu_shared_library, func_name_instantiate_slave )
         self.fmi_component = func_instantiate_slave(
-            c_char_p( name ),
-            c_char_p( fmu_guid ),
-            c_char_p( fmu_uri ),
-            c_char_p( fmu_mime_type ),
+            c_char_p( name.encode( 'utf-8' ) ),
+            c_char_p( fmu_guid.encode( 'utf-8' ) ),
+            c_char_p( fmu_uri.encode( 'utf-8' ) ),
+            c_char_p( fmu_mime_type.encode('utf-8' ) ),
             c_double( timeout ),
             c_char( self.fmi_true if visible is True else self.fmi_false ),
             c_char( self.fmi_true if interactive is True else self.fmi_false ),
@@ -427,4 +431,3 @@ class FMUCoSimulationV1:
             )
 
         self.fmi_component = None
-

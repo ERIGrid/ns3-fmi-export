@@ -17,7 +17,7 @@ def extractFMU( fmuFilePath, outputDirPath, command = None ):
       - unzip: 'unzip {fmu} -d {dir}'
       - 7-zip: '"C:\\Program Files\\7-Zip\\7z.exe" -o{dir} x {fmu}'
     '''
-    import os, zipfile, urlparse, urllib
+    import os, zipfile, urllib.parse as urlparse, urllib.request as urllib
 
     # Check if specified file is indeed a zip file.
     if not zipfile.is_zipfile( fmuFilePath ):

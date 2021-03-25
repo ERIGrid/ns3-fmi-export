@@ -1,20 +1,21 @@
+#!/usr/bin/python3
+
 from FMUCoSimulationV1 import *
 from extractFMU import *
-
-import math, os, sys
+from pathlib import Path
+import math, sys
 
 model_name = 'SimpleFMU'
-work_dir = os.getcwd()
 
 extractFMU(
-    os.path.join( work_dir, '..', model_name + '.fmu' ), 
-    work_dir, 
+    Path( __file__ ).parent / '..' / ( model_name + '.fmu' ),
+    Path( __file__ ).parent, 
     command = 'unzip -o -u {fmu} -d {dir}' 
     )
 
 fmu = FMUCoSimulationV1( 
     model_name, 
-    work_dir 
+    Path( __file__ ).parent 
     )
 
 instance_name = "test_sim_ict"

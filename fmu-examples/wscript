@@ -11,10 +11,6 @@ def build( bld ):
     module.source = [
         'model/client-base.cc',
         'model/server-base.cc',
-        'model/lss2-device-custom-client.cc',
-        'model/lss2-dummy-device-custom-client.cc',
-        'model/lss2-dummy-device-custom-server.cc',
-        'model/lss2-controller-server.cc',
         'model/tc3-oltc-custom-server.cc',
         'model/tc3-smartmeter-custom-client.cc',
         'model/tc3-controller-client.cc',
@@ -31,10 +27,6 @@ def build( bld ):
     headers.source = [
         'model/client-base.h',
         'model/server-base.h',
-        'model/lss2-device-custom-client.h',
-        'model/lss2-dummy-device-custom-client.h',
-        'model/lss2-dummy-device-custom-server.h',
-        'model/lss2-controller-server.h',
         'model/tc3-oltc-custom-server.h',
         'model/tc3-smartmeter-custom-client.h',
         'model/tc3-controller-client.h',
@@ -42,7 +34,6 @@ def build( bld ):
         'model/tc3-custom-client.h',
         'model/tc3-custom-server.h',
         'helper/helper-base.icc',
-        'helper/lss2-helper.h',
         'helper/tc3-helper.h',
         ]
 

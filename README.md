@@ -11,93 +11,88 @@ Module **fmu-examples** provides examples for using the **fmi-export** module.
 The module comprises dedicated models (clients and servers), helpers and simulation scripts implementing example applications, whose functionality is then exported as FMU for Co-Simulation.
 Furthermore, test applications (written in Python) show how the resulting FMUs can be used in a simulation.
 
-## Prerequisites and installation on Linux
-
-In addition to ns-3, the following tools/libraries need to be installed:
-
-* **Cmake**
-* **Boost**: recommended version is **1.66**, all header files plus compiled *date_time*, *system* and *filesystem* libraries are required
-
+## Prerequisites and installation on Ubuntu 18.04
 
 Follow these instructions to install the **fmi-export** module:
 
-1. This module relies on a lot of functionality provided by the FMI++ library.
+1. Install required dependencies:
+   ```
+   $ sudo apt-get install libboost1.65-all-dev
+   $ sudo apt-get install cmake
+   $ sudo apt-get install unzip
+   ```
+
+2. This module relies on a lot of functionality provided by the FMI++ library.
    Hence, in order to install this module, the latest version of the FMI++ library should be cloned from its repository:
-```
-     $ git clone https://git.code.sf.net/p/fmipp/code fmipp
-```
+   ```
+   $ git clone https://git.code.sf.net/p/fmipp/code fmipp
+   ```
 
-2. Get the [source code from GitHub](https://github.com/ERIGrid/ns3-fmi-export).
-```
-     $ git clone https://github.com/ERIGrid/ns3-fmi-export.git
-```
+3. Get the [source code from GitHub](https://github.com/ERIGrid/ns3-fmi-export).
+   ```
+   $ git clone https://github.com/ERIGrid/ns3-fmi-export.git
+   ```
 
-3. From the source code, copy the *fmi-export* directory (and the *fmu-examples* directory if you want to include examples) to the *src* subdirectory of ns-3, i.e., the directory with all the other ns-3 modules.
+4. Get the [ns-3 code](https://gitlab.com/nsnam/ns-3-dev) (tested with release version *ns-3.33*).
+   ```
+   $ git clone https://gitlab.com/nsnam/ns-3-dev.git
+   $ cd ns-3-dev
+   $ git checkout ns-3.33
+   ```
 
-4. Change into the ns-3 directory and configure `waf` with the *--with-fmi-export* flag set to the previously cloned FMI++ library:
-```
-     $ ./waf configure --with-fmi-export=/path/to/cloned/fmipp/code
-```
+5. From the source code, copy the *fmi-export* directory (and the *fmu-examples* directory if you want to include examples) to the *src* subdirectory of ns-3, i.e., the directory with all the other ns-3 modules.
+   ```
+   $ cp -R /path/to/cloned/ns3-fmi-export/fmi-export/ src/
+   $ cp -R /path/to/cloned/ns3-fmi-export/fmu-examples/ src/
+   ```
 
-5. Build the module using `waf`:
-```
-     $ ./waf
-```
+6. Configure `waf` with the *--with-fmi-export* flag set to the previously cloned FMI++ library:
+   ```
+   $ ./waf configure --with-fmi-export=/path/to/cloned/fmipp
+   ```
+
+7. Build the module using `waf`:
+   ```
+   $ ./waf
+   ```
+
+8. If you want to run all the examples (see below for more information), you can run script ``run-tests.sh``:
+   ```
+   $ cd src/fmu-examples/examples
+   $ chmod +x run-tests.sh
+   $ ./run-tests.sh
+   ```
 
 ## Prerequisites and installation in a Cygwin environment (Windows)
 
-ns-3 is mainly developed for Linux, but it can also be installed on Windows in a Cygwin environment:
+ns-3 is mainly developed for Linux, but it can also be installed on Windows in a 32-bit Cygwin environment:
 
-1. Run the [Cygwin installer](https://cygwin.com/install.html)
+1. Run the [32-bit Cygwin installer](https://cygwin.com/install.html)
 
 2. During installation, chose all required packages.
-   For instance, for *Cygwin version 2.891 (32-bit)* the following packages are the minimum requirement:
+   For instance, for *Cygwin version 2.905 (32-bit)* the following packages are the minimum requirement:
 
-   - cmake (version 3.6.2-1)
-   - gcc-g++ (version 7.3.0-3)
-   - git (version 2.17.0-1)
+   - cmake (version 3.17.3-2)
+   - gcc-g++ (version 10.2.0-1)
+   - git (version 2.31.0-1)
    - libboost-devel (version 1.66.0-1)
-   - make (version 4.2.1-2)
-   - mercurial (version 4.3.2-1)
-   - python2-pip (version 9.0.1-1)
+   - make (version 4.3-1)
+   - python36-pip (version 21.0-1)
    - unzip (version 6.0-17)
 
 3. In the *Cygwin Terminal*, set the compiler flags:
-```
-    $ export CXXFLAGS="-D_USE_MATH_DEFINES -D_BSD_SOURCE -include limits.h"
-```
+   ```
+   $ export CXXFLAGS="-D_USE_MATH_DEFINES -D_BSD_SOURCE -include limits.h"
+   ```
 
-4. In the *Cygwin Terminal*, follow the [standard installation instructions for Linux](https://www.nsnam.org/support/faq/setup/):
-```
-    $ hg clone http://code.nsnam.org/ns-3-allinone
-    $ cd ns-3-allinone
-    $ ./download.py
-    $ ./build.py
-```
+4. Follow the installation instructions for Ubuntu (see above), starting from step 2.
 
-5. Retrieve the latest version of the FMI++ library from its repository:
-```
-     $ git clone https://git.code.sf.net/p/fmipp/code fmipp
-```
+**IMPORTANT NOTE**:
+The extra compilers flags from step 3 should always be set when running `./waf configure` or `./waf`.
 
-6. Get the [source code from GitHub](https://github.com/ERIGrid/ns3-fmi-export).
-```
-     $ git clone https://github.com/ERIGrid/ns3-fmi-export.git
-```
-
-7. From the source code, copy the *fmi-export* directory (and the *fmu-examples* directory if you want to include examples) to the *src* subdirectory of ns-3, i.e., the directory with all the other ns-3 modules.
-
-8. Change into the ns-3 directory and configure `waf` with the *--with-fmi-export* flag set to the previously cloned FMI++ library:
-```
-     $ ./waf configure --with-fmi-export=/path/to/cloned/fmipp/code
-```
-
-9. Build the module using `waf`:
-```
-     $ ./waf
-```
-
-**IMPORTANT NOTE**: The extra compilers flags from step 3 should always be set when running `./waf configure` or `./waf`.
+**NOTE**:
+This installation recipe only works with **32-bit versions of Cygwin**.
+Even though everything compiles with 64-bit versions of Cygwin, ns-3 executables exit with a segmentation fault.
 
 
 ## FMI-compliant ns-3 scripts
@@ -109,18 +104,18 @@ Whenever a message is sent from a network node, the associated input variable is
 When the same message is received at another network node, the associated output variable is set to the same message ID.
 The sending/receiving of messages is simulated with individual ns-3 simulation runs, whose results are stored as events in the queue.
 
-To define an FMI-compliant ns-3 script, a new class inheriting from *SimpleEventQueueFMUBase* has to be implementedwhich provides the following two functions:
+To define an FMI-compliant ns-3 script, a new class inheriting from *SimpleEventQueueFMUBase* has to be implemented, which provides the following two methods:
 
-* Function *initializeSimulation()*:
-  This function allows to define simulation variables (typically member variables of the inheriting class) as inputs/outputs/parameters of the ns-3 simulation.
+* Method *initializeSimulation()*:
+  This method allows to define simulation variables (typically member variables of the inheriting class) as inputs/outputs/parameters of the ns-3 simulation.
 
-* Function *runSimulation( const double& sync_time )*:
-  This function is called whenever a new ns-3 simulation has to be run.
+* Method *runSimulation( const double& sync_time )*:
+  This method is called whenever a new ns-3 simulation has to be run.
   Most of the code it contains is what you would typically find in an ns-3 script.
-  Results of such a simulation can be added to the event queue via function *addNewEventForMessage( evt_time, msg_id, output_var )*.
+  Results of such a simulation can be added to the event queue via method *addNewEventForMessage( evt_time, msg_id, output_var )*.
 
 After the definition of the class, the macro *CREATE_NS3_FMU_BACKEND* has to be used.
-This macro replaces the typical main function of ns-3 scripts.
+This macro replaces the typical main methods of ns-3 scripts.
 
 
 ## FMU generation using Python scripts
@@ -473,73 +468,4 @@ When running the simulation script, the output should be similar to the followin
     ctrl_msg_id = 0
     At time 3.09691: RECEIVE message at transformer with ID = 30
     ==========================================
-```
-
-### Example LSS2
-
-#### Creating the FMU
-
-Create the FMU with the help of Python script `ns3_fmu_create.py`.
-In the command line, go to the example directory *src/fmu-examples/examples* and issue the following command:
-```
-  $ ./../../fmi-export/ns3_fmu_create.py -v -m LSS2 -s scratch/LSS2.cc -f 1 max_jitter=0.01
-```
-
-#### Using the FMU in a simulation
-
-Python script `testLSS2.py` uses the generated FMU in a simulation.
-It can be found in the module's subdirectory *examples/test*.
-When running the simulation script, the output should be similar to the following:
-```
-    [test_sim_ict] WARNING: The path specified for the FMU's entry point does not exist: ""
-    Use directory of main application as working directory instead.
-    [test_sim_ict] MIME-TYPE: Wrong MIME type: application/x-waf --- expected:
-    Waf: Entering directory `/cygdrive/c/Development/erigrid/ns-3-allinone/ns-3-dev/build'
-    Waf: Leaving directory `/cygdrive/c/Development/erigrid/ns-3-allinone/ns-3-dev/build'
-    Build commands will be stored in build/compile_commands.json
-    'build' finished successfully (1.371s)
-    Simulate WITHOUT co-channel interference.
-    At time 0.00000: SEND msg_id = 1 from device0_data_send
-    At time 0.00000: SEND msg_id = 2 from device1_data_send
-    At time 0.00000: SEND msg_id = 3 from device2_data_send
-    At time 0.00000: SEND msg_id = 4 from device3_data_send
-    At time 0.00000: SEND msg_id = 5 from device4_data_send
-    At time 0.00000: SEND msg_id = 6 from device5_data_send
-    At time 0.00000: SEND msg_id = 7 from device6_data_send
-    At time 0.00000: SEND msg_id = 8 from device7_data_send
-    At time 0.00000: SEND msg_id = 9 from device8_data_send
-    At time 0.00000: SEND msg_id = 10 from device9_data_send
-    The maximum delay is 0.0220982834417.
-    At time 0.01544: RECEIVE msg_id = 4 at device3_data_receive
-    At time 0.01546: RECEIVE msg_id = 3 at device2_data_receive
-    At time 0.01548: RECEIVE msg_id = 5 at device4_data_receive
-    At time 0.01550: RECEIVE msg_id = 7 at device6_data_receive
-    At time 0.01570: RECEIVE msg_id = 8 at device7_data_receive
-    At time 0.01716: RECEIVE msg_id = 2 at device1_data_receive
-    At time 0.01911: RECEIVE msg_id = 6 at device5_data_receive
-    At time 0.02028: RECEIVE msg_id = 10 at device9_data_receive
-    At time 0.02149: RECEIVE msg_id = 9 at device8_data_receive
-    At time 0.02210: RECEIVE msg_id = 1 at device0_data_receive
-    Simulate WITH co-channel interference.
-    At time 0.02210: SEND msg_id = 11 from device0_data_send
-    At time 0.02210: SEND msg_id = 12 from device1_data_send
-    At time 0.02210: SEND msg_id = 13 from device2_data_send
-    At time 0.02210: SEND msg_id = 14 from device3_data_send
-    At time 0.02210: SEND msg_id = 15 from device4_data_send
-    At time 0.02210: SEND msg_id = 16 from device5_data_send
-    At time 0.02210: SEND msg_id = 17 from device6_data_send
-    At time 0.02210: SEND msg_id = 18 from device7_data_send
-    At time 0.02210: SEND msg_id = 19 from device8_data_send
-    At time 0.02210: SEND msg_id = 20 from device9_data_send
-    The maximum delay is 0.179793258798.
-    At time 0.11613: RECEIVE msg_id = 16 at device5_data_receive
-    At time 0.12119: RECEIVE msg_id = 13 at device2_data_receive
-    At time 0.13336: RECEIVE msg_id = 19 at device8_data_receive
-    At time 0.16874: RECEIVE msg_id = 11 at device0_data_receive
-    At time 0.16930: RECEIVE msg_id = 12 at device1_data_receive
-    At time 0.16990: RECEIVE msg_id = 15 at device4_data_receive
-    At time 0.17166: RECEIVE msg_id = 14 at device3_data_receive
-    At time 0.17218: RECEIVE msg_id = 20 at device9_data_receive
-    At time 0.17288: RECEIVE msg_id = 17 at device6_data_receive
-    At time 0.20189: RECEIVE msg_id = 18 at device7_data_receive
 ```
