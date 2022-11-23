@@ -44,10 +44,10 @@ class SimpleFMU : public SimpleEventQueueFMUBase {
 public:
 
   // Define all FMI input/output variables and parameters as class members:
-  fmi2Integer nodeA_send; // Input variable associated to nodeA.
-  fmi2Integer nodeB_receive; // Output variable associated to nodeB.
-  fmi2Real channel_delay; // Parameter for channel delay.
-  
+  fmippInteger nodeA_send; // Input variable associated to nodeA.
+  fmippInteger nodeB_receive; // Output variable associated to nodeB.
+  fmippReal channel_delay; // Parameter for channel delay.
+
   // Define the inputs/outputs/parameters of the ns-3 simulation.
   virtual void initializeSimulation();
 

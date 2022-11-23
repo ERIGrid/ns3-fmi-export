@@ -31,9 +31,9 @@
 
 namespace Ns3FMUBackendEventQueue
 {
-	typedef fmi2Real TimeStamp;
-	typedef fmi2Integer MessageID;
-	typedef fmi2Integer* Receiver;
+	typedef fmippReal TimeStamp;
+	typedef fmippInteger MessageID;
+	typedef fmippInteger* Receiver;
 
 	struct Event {
 
@@ -66,7 +66,7 @@ public:
 	virtual void initializeScalarVariables();
 	virtual int initializeBackEnd( int argc, const char* argv[] );
 	virtual void initializeParameterValues();
-	virtual int doStep( const fmi2Real& syncTime, const fmi2Real& lastSyncTime );
+	virtual int doStep( const fmippReal& syncTime, const fmippReal& lastSyncTime );
 
 	// This function defines the inputs/outputs/parameters of the
 	// ns-3 simulation (to be implemented by inheriting application).
@@ -98,13 +98,13 @@ private:
 	//
 
 	// Output variable indicating the time of the next scheduled event.
-	fmi2Real next_event_time;
+	fmippReal next_event_time;
 
 	// Default step size (parameter).
-	fmi2Real default_event_step_size;
+	fmippReal default_event_step_size;
 
 	// Random generator seed (parameter).
-	fmi2Integer random_seed;
+	fmippInteger random_seed;
 
 	// Event queue.
 	Ns3FMUBackendEventQueue::EventQueue event_queue_;

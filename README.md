@@ -11,89 +11,66 @@ Module **fmu-examples** provides examples for using the **fmi-export** module.
 The module comprises dedicated models (clients and servers), helpers and simulation scripts implementing example applications, whose functionality is then exported as FMU for Co-Simulation.
 Furthermore, test applications (written in Python) show how the resulting FMUs can be used in a simulation.
 
-## Prerequisites and installation on Ubuntu 18.04
+## Prerequisites and installation on Ubuntu 20.04
 
 Follow these instructions to install the **fmi-export** module:
 
 1. Install required dependencies:
    ```
-   $ sudo apt-get install libboost1.65-all-dev
-   $ sudo apt-get install cmake
-   $ sudo apt-get install unzip
+   sudo apt install build-essential
+   sudo apt install cmake
+   sudo apt install unzip
+   sudo apt install libboost1.71-all-dev
    ```
 
 2. This module relies on a lot of functionality provided by the FMI++ library.
-   Hence, in order to install this module, the latest version of the FMI++ library should be cloned from its repository:
+   Hence, in order to install this module, the latest version of the FMI++ library (commit [10b4dbe](https://github.com/fmipp/fmipp/tree/10b4dbe5162f37440b1c2b59aab080db92b6a7db)) should be cloned from its repository:
    ```
-   $ git clone https://git.code.sf.net/p/fmipp/code fmipp
+   git clone https://github.com/fmipp/fmipp.git
+   cd fmipp
+   git checkout 10b4dbe
+   cd ..
    ```
 
 3. Get the [source code from GitHub](https://github.com/ERIGrid/ns3-fmi-export).
    ```
-   $ git clone https://github.com/ERIGrid/ns3-fmi-export.git
+   git clone https://github.com/ERIGrid/ns3-fmi-export.git
    ```
 
 4. Get the [ns-3 code](https://gitlab.com/nsnam/ns-3-dev) (tested with release version *ns-3.33*).
    ```
-   $ git clone https://gitlab.com/nsnam/ns-3-dev.git
-   $ cd ns-3-dev
-   $ git checkout ns-3.33
+   git clone https://gitlab.com/nsnam/ns-3-dev.git
+   cd ns-3-dev
+   git checkout ns-3.33
    ```
 
 5. From the source code, copy the *fmi-export* directory (and the *fmu-examples* directory if you want to include examples) to the *src* subdirectory of ns-3, i.e., the directory with all the other ns-3 modules.
    ```
-   $ cp -R /path/to/cloned/ns3-fmi-export/fmi-export/ src/
-   $ cp -R /path/to/cloned/ns3-fmi-export/fmu-examples/ src/
+   cp -R /path/to/cloned/ns3-fmi-export/fmi-export/ src/
+   cp -R /path/to/cloned/ns3-fmi-export/fmu-examples/ src/
    ```
 
 6. Configure `waf` with the *--with-fmi-export* flag set to the previously cloned FMI++ library:
    ```
-   $ ./waf configure --with-fmi-export=/path/to/cloned/fmipp
+   ./waf configure --with-fmi-export=/path/to/cloned/fmipp
    ```
 
 7. Build the module using `waf`:
    ```
-   $ ./waf
+   ./waf
    ```
 
 8. If you want to run all the examples (see below for more information), you can run script ``run-tests.sh``:
    ```
-   $ cd src/fmu-examples/examples
-   $ chmod +x run-tests.sh
-   $ ./run-tests.sh
+   cd src/fmu-examples/examples
+   chmod +x run-tests.sh
+   ./run-tests.sh
    ```
 
 ## Prerequisites and installation in a Cygwin environment (Windows)
 
-ns-3 is mainly developed for Linux, but it can also be installed on Windows in a 32-bit Cygwin environment:
-
-1. Run the [32-bit Cygwin installer](https://cygwin.com/install.html)
-
-2. During installation, chose all required packages.
-   For instance, for *Cygwin version 2.905 (32-bit)* the following packages are the minimum requirement:
-
-   - cmake (version 3.17.3-2)
-   - gcc-g++ (version 10.2.0-1)
-   - git (version 2.31.0-1)
-   - libboost-devel (version 1.66.0-1)
-   - make (version 4.3-1)
-   - python36-pip (version 21.0-1)
-   - unzip (version 6.0-17)
-
-3. In the *Cygwin Terminal*, set the compiler flags:
-   ```
-   $ export CXXFLAGS="-D_USE_MATH_DEFINES -D_BSD_SOURCE -include limits.h"
-   ```
-
-4. Follow the installation instructions for Ubuntu (see above), starting from step 2.
-
-**IMPORTANT NOTE**:
-The extra compilers flags from step 3 should always be set when running `./waf configure` or `./waf`.
-
-**NOTE**:
-This installation recipe only works with **32-bit versions of Cygwin**.
-Even though everything compiles with 64-bit versions of Cygwin, ns-3 executables exit with a segmentation fault.
-
+ns-3 is mainly developed for Linux, but it can also be installed on Windows in a 32-bit Cygwin environment.
+Please refer to commit [122190b](https://github.com/ERIGrid/ns3-fmi-export/tree/122190be8c0f7915966bc7adf2ca8bcab4d73ca4) for details.
 
 ## FMI-compliant ns-3 scripts
 
@@ -211,9 +188,9 @@ It implements a simple simulation in which one node (A) send messages to another
 The script defines class *SimpleFMU*, which inherits from class *SimpleEventQueueFMUBase*:
 * The class defines three class member variables:
 
-  1. Variable *nodeA_send* is of type fmi2Integer and will be used as input variable for the final FMU
-  2. Variable *nodeB_receive* is of type fmi2Integer and will be used as output variable for the final FMU
-  3. Variable *channel_delay* is of type fmi2Real and will be used as parameter for the final FMU
+  1. Variable *nodeA_send* is of type fmippInteger and will be used as input variable for the final FMU
+  2. Variable *nodeB_receive* is of type fmippInteger and will be used as output variable for the final FMU
+  3. Variable *channel_delay* is of type fmippReal and will be used as parameter for the final FMU
 
 * Function *initializeSimulation()*:
   This function uses the macros *addIntegerInput(...)*, *addIntegerOutput(...)* and *addRealParameter(...)* to define the class member variables as input, output and parameter, respectively.

@@ -86,9 +86,9 @@ It implements a simple simulation in which one node (A) send messages to another
 The script defines class *SimpleFMU*, which inherits from class *SimpleEventQueueFMUBase*:
 * The class defines three class member variables:
 
-  1. Variable *nodeA_send* is of type fmi2Integer and will be used as input variable for the final FMU
-  2. Variable *nodeB_receive* is of type fmi2Integer and will be used as output variable for the final FMU
-  3. Variable *channel_delay* is of type fmi2Real and will be used as parameter for the final FMU
+  1. Variable *nodeA_send* is of type fmippInteger and will be used as input variable for the final FMU
+  2. Variable *nodeB_receive* is of type fmippInteger and will be used as output variable for the final FMU
+  3. Variable *channel_delay* is of type fmippReal and will be used as parameter for the final FMU
 
 * Function *initializeSimulation()*:
   This function uses the macros *addIntegerInput(...)*, *addIntegerOutput(...)* and *addRealParameter(...)* to define the class member variables as input, output and parameter, respectively.

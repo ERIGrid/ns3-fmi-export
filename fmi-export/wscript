@@ -13,11 +13,12 @@ def options( opt ):
 
 
 def required_boost_libs( conf ):
-    conf.env[ 'REQUIRED_BOOST_LIBS' ] += REQUIRED_BOOST_LIBS
+    for lib in REQUIRED_BOOST_LIBS:
+        if lib not in conf.env[ 'REQUIRED_BOOST_LIBS' ]:
+            conf.env[ 'REQUIRED_BOOST_LIBS' ] += REQUIRED_BOOST_LIBS
 
 
 def configure( conf ):
-
     # Check if the module has been selected for compilation.
     if not Options.options.with_fmi_export:
         # The module has not been selected for compilation, abort configuration.
@@ -25,27 +26,9 @@ def configure( conf ):
         return
 
     # Check if Boost is abailable.
-    if not conf.env['LIB_BOOST']:
+    if not conf.env['BOOST_VERSION']:
         abort_configuration( conf, 'A Boost installation is required for this module.' )
         return
-
-    # Retrieve list of available boost libraries.
-    present_boost_libs = []
-    for boost_lib_name in conf.env[ 'LIB_BOOST' ]:
-        if boost_lib_name.startswith( "boost_" ):
-            boost_lib_name = boost_lib_name[6:]
-        if boost_lib_name.endswith( ".dll" ): # Cygwin support.
-            boost_lib_name = boost_lib_name[:-4]
-        if boost_lib_name.endswith( "-mt" ):
-            boost_lib_name = boost_lib_name[:-3]
-        present_boost_libs.append( boost_lib_name )
-
-    # Check if specific Boost libraries are available
-    missing_boost_libs = [ lib for lib in REQUIRED_BOOST_LIBS if lib not in present_boost_libs ]
-    if missing_boost_libs != []:
-        error_message = 'Required boost libraries not found, missing: %s' % ', '.join( missing_boost_libs )
-        abort_configuration( conf, error_message )
-        return    
 
     # Configure dependencies to FMI++ library.
     if os.path.isdir( Options.options.with_fmi_export ):

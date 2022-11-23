@@ -43,12 +43,12 @@ class TC3CommNetworkFMU : public SimpleEventQueueFMUBase {
 public:
 
 	// Define FMI input/output variables and parameters as class members
-	fmi2Integer u3_send;	// Input variable associated to SmartMeterA
-	fmi2Integer u4_send; // Input variable associated to SmartMeterB
-	fmi2Integer ctrl_send;  // Input variable associated to controller
+	fmippInteger u3_send;	// Input variable associated to SmartMeterA
+	fmippInteger u4_send; // Input variable associated to SmartMeterB
+	fmippInteger ctrl_send;  // Input variable associated to controller
 
-	fmi2Integer ctrl_receive;  // Output variable associated to controller
-	fmi2Integer tap_receive; // Output variable associated to the OLTC
+	fmippInteger ctrl_receive;  // Output variable associated to controller
+	fmippInteger tap_receive; // Output variable associated to the OLTC
 
 	// Variables to hold the nodes' IP addresses
 	Ipv4Address smartMeterA_;

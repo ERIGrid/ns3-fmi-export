@@ -72,7 +72,7 @@ SimpleEventQueueFMUBase::initializeBackEnd( int argc, const char* argv[] )
 	// Initialize output for debug messages.
 	if ( true == loggingOn() ) debug_ = new std::ofstream( "sim_ict_exe.log" );
 
-	fmi2Real start_time = getCurrentCommunicationPoint();
+	fmippReal start_time = getCurrentCommunicationPoint();
 
 	// Insert first dummy event into the event queue.
 	current_event_ = event_queue_.insert( new Event( start_time, 0, true, 0 ) ).first;
@@ -80,7 +80,7 @@ SimpleEventQueueFMUBase::initializeBackEnd( int argc, const char* argv[] )
 
 	// If default event step size is zero, set it to the largest possible value.
 	// This is equivalent to not using default events.
-	if ( 0. == default_event_step_size ) default_event_step_size = std::numeric_limits<fmi2Real>::max();
+	if ( 0. == default_event_step_size ) default_event_step_size = std::numeric_limits<fmippReal>::max();
 
 	// Radom generator seed has to be a positive non-zero integer.
 	if ( 1 > random_seed ) random_seed = 1;
@@ -96,7 +96,7 @@ SimpleEventQueueFMUBase::initializeBackEnd( int argc, const char* argv[] )
 // When it is called, the variables defined as inputs during initialization have
 // already been synchronized to the latest input from the frontend.
 int
-SimpleEventQueueFMUBase::doStep( const fmi2Real& syncTime, const fmi2Real& lastSyncTime )
+SimpleEventQueueFMUBase::doStep( const fmippReal& syncTime, const fmippReal& lastSyncTime )
 {
 	std::stringstream debug_msg;
 	debug_msg << "DOSTEP: t = " << syncTime << std::endl;
@@ -117,7 +117,7 @@ SimpleEventQueueFMUBase::doStep( const fmi2Real& syncTime, const fmi2Real& lastS
 			debug_msg << "DOSTEP: event has msg_id = " << (*current_event_)->msg_id << std::endl;
 
 			if ( true == (*current_event_)->default_event ) { // This event is a default event. -> Add the next default event.
-				fmi2Real next_default_event_time = (*current_event_)->time_stamp + default_event_step_size;
+				fmippReal next_default_event_time = (*current_event_)->time_stamp + default_event_step_size;
 				event_queue_.insert( current_event_, new Event( next_default_event_time, 0, true, 0 ) );
 
 				//std::stringstream debug_msg;
@@ -141,7 +141,7 @@ SimpleEventQueueFMUBase::doStep( const fmi2Real& syncTime, const fmi2Real& lastS
 				if ( true == getStopTimeDefined() ) {
 					next_event_time = getStopTime(); // Retrieve stop time.
 				} else {
-					next_event_time = std::numeric_limits<fmi2Real>::max(); // No stop time defined, use other value.
+					next_event_time = std::numeric_limits<fmippReal>::max(); // No stop time defined, use other value.
 				}
 			}
 
@@ -222,8 +222,8 @@ SimpleEventQueueFMUBase::debug( const std::string& msg ) const
 void
 SimpleEventQueueFMUBase::resetIntegerInputs()
 {
-	std::vector<fmi2Integer*>::iterator it = integerInputs_.begin();
-	std::vector<fmi2Integer*>::iterator end = integerInputs_.end();
+	std::vector<fmippInteger*>::iterator it = integerInputs_.begin();
+	std::vector<fmippInteger*>::iterator end = integerInputs_.end();
 	for ( ; it != end; ++it ) **it = 0;
 }
 
@@ -232,7 +232,7 @@ SimpleEventQueueFMUBase::resetIntegerInputs()
 void
 SimpleEventQueueFMUBase::resetIntegerOutputs()
 {
-	std::vector<fmi2Integer*>::iterator it = integerOutputs_.begin();
-	std::vector<fmi2Integer*>::iterator end = integerOutputs_.end();
+	std::vector<fmippInteger*>::iterator it = integerOutputs_.begin();
+	std::vector<fmippInteger*>::iterator end = integerOutputs_.end();
 	for ( ; it != end; ++it ) **it = 0;
 }
